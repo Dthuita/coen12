@@ -1,0 +1,114 @@
+//LAB 2 COEN12
+
+#include <stdio.h>
+#include <stdbool.h>
+
+typedef struct *set{
+  char **data; //pointer pointing to pointers
+  int length; //length of data array
+  int count; //
+
+}SET;
+
+bool found;
+
+
+SET *createSet(int maxElts){
+  SET *sp;
+  sp = malloc(sizeof(SET));
+  assert(sp != NULL); //what
+
+  sp->data = (char**)malloc(maxElts * sizeof(char**));
+  assert(a != NULL)
+
+  sp->length = maxElts;
+  sp->count = 0;
+
+}
+bool addElement(SET *sp, char *elt){
+  //first allocate memory
+  sp->data[sp->count] = malloc( (strlen(elt) + 1)*sizeof(char) );
+  assert( sp->data[sp->count] != NULL );
+
+  //array too long
+  if(count == length){
+    printf("Too many Elements!");
+    return false;
+  }
+
+  //repeatition
+  if( findElement() != NULL ){
+      printf("Element already exists!");
+      return false;
+  }
+
+  //add new element
+  strcpy(sp->data[sp->count], elt);
+  count++;
+  return true;
+}
+int numElements(SET *sp){
+  return count-1;
+}
+bool removeElement(SET *sp, char *elt){
+  assert(sp != NULL);
+
+  //find Element in array if exists
+  if( findElement() == NULL ){
+    printf("Element does not exist!");
+  }else{
+    //remove element from array
+    int index = search(sp, elt, false);
+    sp->data[index] = realloc( sp->data[index], (strlen(elt) + 1)*sizeof(char) );
+    assert( sp->data[index] != NULL );
+
+    //fill space with last element in array
+    strcpy( sp->data[index], sp->data[sp->count]);
+
+    //remove last element sapce
+    free(sp->data[count];
+  }
+
+}
+char *findElement(SET *sp, char *elt){
+  char *match;
+  for(int i=0; i < count; i++){
+    if( strcmp( sp->data[i], elt) == 0 ){
+      match = elt;
+      return match;
+    }else{
+      return NULL;
+    }
+  }
+
+}
+char **getElements(SET *sp){
+
+}
+void destroySet(SET *sp){
+  assert( sp != NULL);
+  //free alloacated memories
+  for(int i=0; i < count; i++){
+    free(sp->data[i]);
+  }
+  free(sp->data);
+  free(sp);
+
+}
+static int search(SET *sp, char *elt, bool *found){
+  for(int i=0; i < count; i++){
+    if( strcmp( sp->data[i], elt) == 0 ){
+      found = true;
+      return i;
+    }else{
+      found = false;
+      return NULL;
+    }
+  }
+
+}
+int main(){
+
+
+
+}

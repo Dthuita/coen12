@@ -1,0 +1,157 @@
+
+
+//LAB 2 COEN12
+/*
+ *File:        sorted.c
+ *
+ *Copyright:   2022, David C. Thuita
+ *
+ *Description: This file acts as a definer for the set.h header
+ *             It defines the functions for set.h and its struct
+ *             so that unique.c and parity.c can use the functions
+ *
+ */
+
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <assert.h>
+
+typedef struct set{
+  char **data; //pointer pointing to pointers
+  int length; //length of data array
+  int count; //
+
+}SET;
+
+
+SET *createSet(int maxElts){
+  SET *sp;
+  sp = malloc(sizeof(SET));
+  assert(sp != NULL);
+
+  sp->data = (char**)malloc(maxElts * sizeof(char*));
+  assert(sp->data != NULL);
+
+  sp->length = maxElts;
+  sp->count = 0;
+  return sp;
+
+}
+
+
+static int bsearch(SET *sp, char *elt, bool found){ //use binary search & add bool found
+
+  int low, mid, hig;
+
+  low = 0;
+  hig = sp->count-1;
+
+  while(low <= hig){
+
+    mid = (low+hig)/2;
+
+    //if mid value less than given str
+    if( strcmp(sp->data[mid], elt) < 0 ){
+      low = mid + 1;
+    }
+    //if mid value greater than given str
+    if( strcmp(sp->data[mid], elt) > 0 ){
+      hig = mid - 1;
+    }
+    //if mid value equal than given str i.e. value is found
+    if( strcmp(sp->data[mid], elt) == 0 ){
+      return mid;
+      found = true;
+    }
+
+  }
+  found = false;
+  return low; //index where elt should be
+}
+
+bool addElement(SET *sp, char *elt){
+  //first allocate memory
+  sp->data[sp->count] = malloc( (strlen(elt) + 1)*sizeof(char) );
+  assert( sp->data[sp->count] != NULL );
+
+  //array too long
+  if(sp->count == sp->length){
+    return false;
+  }
+
+  //repeatition
+  bsearch(sp, elt, false);
+  if( found != true){
+      return false;
+  }
+
+  //add new element
+  int index = bsearch(sp, elt, false)
+  //strcpy(sp->data[sp->count], elt);
+
+  //do i need string copy instead of = signs?
+  char* temp = sp->data[index]; //do i have to alloacte memory for char*?
+  sp->data[index] = elt;
+
+  for(int k=index+1; k < sp->count-1; k++){
+    char* temp2 = sp->count[k];
+    sp->count[k] = temp;
+    temp2 = temp;
+  }
+
+
+
+  sp->count += 1;
+  return true;
+}
+int numElements(SET *sp){
+  return sp->count;
+}
+void removeElement(SET *sp, char *elt){
+  assert(sp != NULL);
+
+  //find Element in array if exists
+  bsearch(sp, elt, false);
+  if( found != true){
+    return;
+  }else{
+    //remove element from array
+    int index = bsearch(sp, elt, false);
+    free( sp->data[index] );
+
+    //check memory
+    assert( sp->data[index] != NULL );
+
+    //fill space with last element in array
+    sp->data[index] = sp->data[--sp->count]; //why --sp->count
+
+  }
+  sp->count--; //update count??
+}
+char *findElement(SET *sp, char *elt){
+  for(int i=0; i < sp->count; i++){
+    if( strcmp( sp->data[i], elt) == 0 ){
+      return elt;
+    }
+  }
+
+}
+char **getElements(SET *sp){
+  char **words = malloc(sp->count*(sizeof(char*)));
+  assert(words != NULL);
+
+  return memcpy(words, sp->data, sp->count*(sizeof(char*))  );
+}
+void destroySet(SET *sp){
+  assert( sp != NULL);
+  //free alloacated memories
+  for(int i=0; i < sp->count; i++){
+    free(sp->data[i]);
+  }
+  free(sp->data);
+  free(sp);
+
+}

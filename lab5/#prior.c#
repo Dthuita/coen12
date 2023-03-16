@@ -1,0 +1,130 @@
+
+//LAB 5 COEN12
+/*
+*File:        prior.c
+*
+*Copyright:   2022, David C. Thuita
+*
+*Description: 
+*
+*/
+# include <stdio.h>
+# include <stdlib.h>
+# include <assert.h>
+# include "pqueue.h"
+
+typedef struct pqueue{
+    int count;
+    int length;
+    void **data;
+    int (*compare)();
+}PQ;
+
+PQ *createQueue(int (*compare)()){
+    PQ *pq = malloc(sizeof(PQ));
+
+    pq->count=0;
+    pq->length= 10;
+    pq->data = malloc(pq->length*sizeof(void*));
+    pq->compare = compare;
+    
+    assert(pq != NULL);
+
+    return pq;//must return pq struct
+}
+void destroyQueue(PQ *pq){
+    assert(pq != NULL);
+
+    //free data container
+    free(pq->data);
+
+    //free pq struct
+    free(pq);
+}
+int numEntries(PQ *pq){
+    assert(pq != NULL);
+    
+    return pq->count;
+}
+void addEntry(PQ *pq, void *entry){
+    assert(pq != NULL && entry != NULL);
+    
+    pq->count++;
+    //realloc(pq->data, pq->count*sizeof(void*) );
+
+    int x = pq->count -1; //index
+
+    int parent = ((x-1)/2);//round down??
+    
+    //first entry
+    if(pq->count == 0){
+        pq->data[0] = entry;
+        return;
+    }
+
+
+    while( x > 0){
+        //parent less than entry
+        if((*pq->compare)(pq->data[parent], entry) < 0){
+            pq->data[x] = pq->data[parent];
+            //pq->data[parent] = entry;
+            x = parent;
+            parent = ((x-1)/2); 
+        }else{
+               break;
+        }
+    }
+    pq->data[x]= entry;
+}
+void *removeEntry(PQ *pq){
+    assert(pq != NULL);
+
+    //replace min with bottom far most right\
+    pq->data[0] = pq->data[pq->count];
+
+    //reheap
+    int root = 0;
+    int childLeft = 1;
+    int childRight = 2; 
+
+    while(childLeftt < pq->count){
+if( (*pq->compare)(pq->data[root], pq->data[childLeft]) > 0 ){  
+	(*pq->compare)(pq->data[childRight], pq->data[childLeft]) > 0 ){
+           pq->data[root] = pq->data[childLeft];
+	   root = childLeft;
+        }else if( (*pq->compare)(pq->data[root], pq->data[childRight]) > 0 &&  (*pq->compare)(pq->data[childRight], pq->data[childLeft]) < 0 ){
+           pq->data[root] =  pq->data[childRight];
+	   root = childRight;
+        }else{
+           break;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        childLeft = root*2 + 1;
+        childRight = root*2 + 2;
+    }
+    pq->count--;
+
+}

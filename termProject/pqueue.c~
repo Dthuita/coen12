@@ -1,0 +1,304 @@
+/*
+ *File: list.c
+ *
+ *Copyright: 2022, David C. Thuita
+ *
+ *Description:
+ *
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "list.h"
+
+typedef struct node{
+    void **data;
+    int count;
+    int front;
+    struct node* next;
+    struct node* prev;
+}NODE;
+typedef struct list{
+    int count; //total # of items not total # of nodes
+    struct node *head;
+    struct node *tail;
+}LIST;
+
+LIST *createList(void){//O(???)  
+    LIST *lp= malloc(sizeof(LIST));
+
+    lp->count=0;
+
+    lp->head= malloc(sizeof(NODE));
+    lp->head->data = malloc(sizeof(void*)); //2d array
+    lp->head->count = 0;
+    lp->head->front = 0;
+
+    lp->tail= malloc(sizeof(NODE));
+    lp->tail->data = malloc(sizeof(void*)); //2d array
+    lp->tail->count = 0;
+    lp->tail->front=0;
+
+    lp->head->next = lp->tail;
+    lp->head->prev = lp->tail;
+    
+    lp->tail->next = lp->head;
+    lp->tail->prev = lp->head;
+
+    return lp;
+}
+void destroyList(LIST *lp){//O(???)  
+    assert(lp != NULL);
+
+    NODE *temp1 = lp->head;
+    NODE *temp2;
+
+    while(temp1->next != NULL){
+        temp2 = temp1->next;
+          
+        free(temp1->data);
+        free(temp1);
+
+        temp1 = temp2;
+    }
+    free(lp);
+}
+int numItems(LIST *lp){//O(1)
+    assert(lp != NULL);
+
+    return lp->count;
+}
+void addFirst(LIST *lp, void *item){//O(???)  
+
+    NODE *temp = lp->head;
+ 
+    //first node array is full
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    if(temp->count == len){ //count for array is equal to size of array AKA array is full
+        
+        //initilaize new node
+        NODE *new = malloc(sizeof(NODE));
+        new->data = malloc(2*len*sizeof(void*));
+        new->count = 0;
+        new->front = 0;
+
+        //insert new value
+        new->data[new->front] = item;
+       
+        //connect new node to first of circular list
+        new->next =lp->head;
+        new->prev = lp->tail;
+
+        lp->tail->next = new;
+        lp->head->prev = new;
+        lp->head = new;
+
+        //add new item to count
+        new->count++;
+        lp->count++;
+        return;
+    }
+
+    //first node array is not full
+        //int rear= (lp->head->front+lp->head->count-1)%len;
+
+    //adjust the front index
+    if( lp->head->front != 0)
+        lp->head->front -=1;
+    else
+        lp->head->front = len-1;
+
+    lp->head->data[lp->head->front] = item;
+
+    lp->count++;
+    return;
+}
+void addLast(LIST *lp, void *item){//O(???)  
+    
+    NODE *temp = lp->head;
+ 
+    //first node array is full
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    if(temp->count == len){ //count for array is equal to size of array AKA array is full
+        
+        //initilaize new node
+        NODE *new = malloc(sizeof(NODE));
+        new->data = malloc(2*len*sizeof(void*));
+        new->count = 0;
+        new->front = 0;
+        
+        //insert new value at rear
+        new->data[(new->front-1)%len] = item;
+       
+        //connect new node to tail of circular list
+        new->next =lp->head;
+        new->prev = lp->tail;
+
+        lp->tail->next = new;
+        lp->head->prev = new;
+        lp->tail = new;
+
+        //add new item to count
+        new->count++;
+        lp->count++;
+        return;
+    }
+
+    //last node array is not full
+    int rear= (lp->head->front+lp->head->count-1)%len;
+
+    if( rear == len-1)
+        rear = 0;        
+    else
+        rear++;
+
+    lp->tail->data[rear] = item;
+
+    lp->count++;
+    return;
+
+}
+void *removeFirst(LIST *lp){//O(???)  
+     
+    //head node is empty
+    NODE *temp=lp->head;
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+
+    if( lp->head->count == 0){
+        temp = lp->head->next;
+
+        //connect head to prev node
+        temp->prev =lp->tail;
+        lp->tail->next = temp;
+        
+        //free old tail node
+        free(lp->head->data);
+        free(lp->head);
+
+        //establish new tail
+        lp->head = temp;
+
+    }
+    
+    //if head node isnt empty 
+    
+    void *oldFirstItem = temp->data[temp->front];
+
+    //shift front by one over so old front will be overwritten?
+    lp->head->front++;
+
+    if(lp->head->front > len)
+        lp->head->front = 0;
+
+    lp->head->count--;
+    lp->count--;
+    return oldFirstItem;
+}
+void *removeLast(LIST *lp){ //O(???)  
+
+    
+
+
+    {
+assert(lp != NULL);
+                        assert(lp->nodeCount > 0);
+
+                                if(lp->head->count == 1) //if the first node only has one value, remove it and remove the node
+                                            {
+                                                                assert(lp->count>0);
+                                                                                NODE *oldFirst = lp->head;
+                                                                                                NODE *newFirst = oldFirst->next;
+                                                                                                                void *oldFirstValue = oldFirst->data[0];
+                                                                                                                                lp->head->next = newFirst;
+                                                                                                                                                newFirst->prev = lp->head;
+                                                                                                                                                                free(oldFirst);
+                                                                                                                                                                                lp->nodeCount--;
+                                                                                                                                                                                                return oldFirstValue;
+                                                                                                                                                                                                        }
+                                        else //remove the first value in the array of the first node and shift all other values down
+                                                    {
+                                                                        assert(lp->count > 0);
+                                                                                        NODE *first = lp->head;
+                                                                                                        void *oldFirstValue = first->data[0];
+                                                                                                                        int i;
+                                                                                                                                        for(i=0; i<first->count; i++)
+                                                                                                                                                            {
+                                                                                                                                                                                        current->data[i] = current->data[i+1];
+                                                                                                                                                                                                        }
+                                                                                                                                                        first->count--;
+                                                                                                                                                                        return oldFirstValue;
+                                                            }
+
+   /* 
+    NODE *temp= lp->tail;
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    
+    //head node is empty
+    if( lp->tail->count == 0){
+
+        temp = lp->tail->prev;
+
+        //connect head to prev node
+        temp->next =lp->head;
+        lp->head->prev = temp;
+
+        //free old tail node
+        free(lp->tail->data);
+        free(lp->tail);
+        
+        //establish new tail
+        lp->tail = temp;
+
+    }
+    
+    void *oldLastItem = lp->tail->data[(lp->tail->front+lp->tail->count-1)%len];
+    
+    //reduce count so rear will be overwritten?
+    lp->tail->count--;
+    lp->count--;
+    return oldLastItem;*/
+
+}
+void *getFirst(LIST *lp){//O(???)  
+    assert(lp != NULL);
+
+    return lp->head->data[lp->head->front];
+}
+void *getLast(LIST *lp){//O(???)  
+    assert(lp != NULL);
+
+    NODE *temp = lp->tail;
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+
+    return temp->data[ ( temp->front + temp->count -1 ) % len];
+}
+void *getItem(LIST *lp, int index){//O(???)  
+    //search through nodes and adjust for length size
+    assert(lp != NULL);
+
+    NODE *temp = lp->head;
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    
+    while( index > len && temp->next != NULL){
+            index -= len;
+            temp = temp->next;
+            len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    }
+
+    return temp->data[index];
+}
+void setItem(LIST *lp, int index, void *item){//O(???)  
+    //search through nodes and adjust for length size
+    assert(lp != NULL);
+
+    NODE *temp = lp->head;
+    int len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    
+    while( index > len && temp->next != NULL){
+            index -= len;
+            temp = temp->next;
+            len = sizeof(temp->data)/ sizeof(temp->data[0]);
+    }
+
+    temp->data[index] = item;
+}

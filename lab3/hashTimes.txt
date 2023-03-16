@@ -1,0 +1,127 @@
+unique hash
+
+real	0m0.006s
+user	0m0.002s
+sys	0m0.001s
+
+real	0m0.010s
+user	0m0.005s
+sys	0m0.003s
+
+real	0m0.010s
+user	0m0.006s
+sys	0m0.003s
+
+real	0m0.015s
+user	0m0.014s
+sys	0m0.000s
+
+real	0m0.015s
+user	0m0.011s
+sys	0m0.003s
+
+real	0m0.014s
+user	0m0.010s
+sys	0m0.002s
+
+real	0m0.015s
+user	0m0.012s
+sys	0m0.001s
+
+real	0m0.026s
+user	0m0.023s
+sys	0m0.001s
+
+real	0m0.127s
+user	0m0.124s
+sys	0m0.001s
+
+real	0m0.097s
+user	0m0.094s
+sys	0m0.002s
+unique hash
+
+real	0m0.005s
+user	0m0.001s
+sys	0m0.002s
+
+real	0m0.009s
+user	0m0.007s
+sys	0m0.000s
+
+real	0m0.012s
+user	0m0.007s
+sys	0m0.004s
+
+real	0m0.018s
+user	0m0.014s
+sys	0m0.002s
+
+real	0m0.017s
+user	0m0.013s
+sys	0m0.002s
+
+real	0m0.017s
+user	0m0.015s
+sys	0m0.000s
+
+real	0m0.018s
+user	0m0.014s
+sys	0m0.002s
+
+real	0m0.023s
+user	0m0.019s
+sys	0m0.003s
+
+real	0m0.076s
+user	0m0.073s
+sys	0m0.002s
+
+real	0m0.080s
+user	0m0.078s
+sys	0m0.001s
+parity hash
+
+real	0m0.004s
+user	0m0.002s
+sys	0m0.000s
+
+real	0m0.012s
+user	0m0.008s
+sys	0m0.002s
+
+real	0m0.011s
+user	0m0.010s
+sys	0m0.000s
+
+real	0m0.018s
+user	0m0.017s
+sys	0m0.000s
+
+real	0m0.018s
+user	0m0.017s
+sys	0m0.000s
+
+real	0m0.033s
+user	0m0.028s
+sys	0m0.003s
+
+real	0m0.027s
+user	0m0.025s
+sys	0m0.001s
+
+real	0m0.037s
+user	0m0.035s
+sys	0m0.000s
+
+real	0m4.961s
+user	0m4.953s
+sys	0m0.005s
+
+real	0m0.413s
+user	0m0.407s
+sys	0m0.004s
+
+real	0m0.416s
+user	0m0.408s
+sys	0m0.006s
